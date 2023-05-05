@@ -135,13 +135,22 @@ var CustomMap = /** @class */function () {
       }
     });
   }
+  // this method is for adding marker in specific location that user and company indicates
   CustomMap.prototype.addMarker = function (mappable) {
-    new google.maps.Marker({
+    var _this = this;
+    var marker = new google.maps.Marker({
       map: this.googleMap,
       position: {
         lat: mappable.location.lat,
         lng: mappable.location.lng
       }
+    });
+    // this particular functionality is for generating pop up with some info while clicking marker
+    marker.addListener("click", function () {
+      var infoWindow = new google.maps.InfoWindow({
+        content: mappable.markerContent()
+      });
+      infoWindow.open(_this.googleMap, marker);
     });
   };
   return CustomMap;
@@ -22822,6 +22831,9 @@ var User = /** @class */function () {
       lng: parseFloat(faker_1.faker.address.longitude())
     };
   }
+  User.prototype.markerContent = function () {
+    return "\n            <div>\n                <h1>User Name: ".concat(this.name, "</h1>\n            </div>\n        ");
+  };
   return User;
 }();
 exports.User = User;
@@ -22842,6 +22854,9 @@ var Company = /** @class */function () {
       lng: parseFloat(faker_1.faker.address.longitude())
     };
   }
+  Company.prototype.markerContent = function () {
+    return "\n            <div>\n                <h1>Company Name: ".concat(this.companyName, "</h1>\n                <h1>Catch Phrase: ").concat(this.catchPhrase, "</h1>\n            </div>\n        ");
+  };
   return Company;
 }();
 exports.Company = Company;
@@ -22884,7 +22899,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "37483" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "33765" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];
